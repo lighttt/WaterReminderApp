@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">WaterReminderApp</string>
+
+
+    <string name="tv_instructions">Press the glass of water after you drink.</string>
+    <string name="description">Press to record drinking water</string>
+    <string name="default_water_count">0</string>
+    <string name="charging_desc">Charging Plug Image</string>
+    <string name="default_charge_notification_count">Hydrate while charging remainder send 0 times</string>
+    <string name="drinking_water">GUTT GUUTT GUUUTT</string>
+
+    <plurals name="charge_notification_count">
+        <item quantity="zero">Hydrate while charging remainder send %d times</item>
+        <item quantity="one">Hydrate while charging remainder send %d time</item>
+        <item quantity="other">Hydrate while charging remainder send %d times</item>
+    </plurals>
+
 </resources>
