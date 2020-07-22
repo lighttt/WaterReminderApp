@@ -8,6 +8,8 @@
     <string name="charging_desc">Charging Plug Image</string>
     <string name="default_charge_notification_count">Hydrate while charging remainder send 0 times</string>
     <string name="drinking_water">GUTT GUUTT GUUUTT</string>
+    <string name="notif_text">Please drink water to hydrate yourself when your phone is charging. Drink it now!</string>
+    <string name="notif_title">Phone Charging - Get drinking water!</string>
 
     <plurals name="charge_notification_count">
         <item quantity="zero">Hydrate while charging remainder send %d times</item>

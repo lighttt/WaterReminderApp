@@ -54,7 +54,7 @@ public class PreferenceUtilities {
     /**
      * Increment the charge reminder count by 1
      */
-    synchronized public static void incrementReminderCount(Context context)
+    synchronized public static void incrementChargingReminderCount(Context context)
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         int chargingReminder= prefs.getInt(KEY_CHARGING_REMINDER_COUNT,DEFAULT_COUNT);

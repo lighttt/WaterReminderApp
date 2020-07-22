@@ -12,7 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import np.com.manishtuladhar.waterreminderapp.sync.ReminderTasks;
+import np.com.manishtuladhar.waterreminderapp.sync.ReminderUtils;
 import np.com.manishtuladhar.waterreminderapp.sync.WaterReminderIntentService;
+import np.com.manishtuladhar.waterreminderapp.utilities.NotificationUtils;
 import np.com.manishtuladhar.waterreminderapp.utilities.PreferenceUtilities;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -36,10 +38,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         updateWaterCount();
         updateChargingReminderCount();
 
+        //run the charging reminder
+        ReminderUtils.scheduleChargingReminder(this);
+
         //setup shared prefs
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
+
 
     /**
      * Update the water count into textview
