@@ -2,8 +2,13 @@ package np.com.manishtuladhar.waterreminderapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -23,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private ImageView mChargingIV;
 
     private Toast mToast;
+
+    ChargingBroadCastReceiver mChargingBroadCastReceiver;
+    IntentFilter mChargingIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //setup shared prefs
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
+
+        //broadcast receiver
+        mChargingBroadCastReceiver = new ChargingBroadCastReceiver();
+        mChargingIntentFilter = new IntentFilter();
+
+        //add filters to intent filter
+        mChargingIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+        mChargingIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
     }
 
 
@@ -102,4 +118,61 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.unregisterOnSharedPreferenceChangeListener(this);
     }
+
+
+    // =============================== BROADCAST RECEIVER =========================================
+
+    private class ChargingBroadCastReceiver extends BroadcastReceiver {
+
+        //we receive certain intent if the phone is charging or on any other state.
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            boolean isCharging = action.equals(Intent.ACTION_POWER_CONNECTED);
+            showCharging(isCharging);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //sticky broadcast
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
+        {
+            //use battery manager to know if there is changing in charging
+            BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+            showCharging(batteryManager.isCharging());
+        }
+        else{
+            //using intent filter and battery manager to get the change in battery status
+            IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            Intent currentBatteryStatusIntent = registerReceiver(null,intentFilter);
+            int batteryStatus = currentBatteryStatusIntent.getIntExtra(BatteryManager.EXTRA_STATUS,-1);
+            boolean isCharging = batteryStatus == BatteryManager.BATTERY_STATUS_CHARGING || batteryStatus == BatteryManager.BATTERY_STATUS_DISCHARGING;
+            showCharging(isCharging);
+        }
+        registerReceiver(mChargingBroadCastReceiver,mChargingIntentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mChargingBroadCastReceiver);
+    }
+
+    /**
+     * Change the charging color of the plug
+     */
+    private void showCharging(boolean isCharging)
+    {
+        if(isCharging)
+        {
+            mChargingIV.setImageResource(R.drawable.ic_baseline_green_power_24);
+        }
+        else{
+            mChargingIV.setImageResource(R.drawable.ic_baseline_power_24);
+        }
+    }
+
 }

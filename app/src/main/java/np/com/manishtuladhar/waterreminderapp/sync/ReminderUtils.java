@@ -2,10 +2,7 @@ package np.com.manishtuladhar.waterreminderapp.sync;
 
 import android.content.Context;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Constraints;
-
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.Driver;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -22,7 +19,7 @@ public class ReminderUtils {
 
     //charging state or not
     // 15 mins update or notify
-    private static final int REMINDER_INTERVAL_MINUTES = 1;
+    private static final int REMINDER_INTERVAL_MINUTES = 15;
     private static final int REMINDER_INTERVAL_SECONDS = (int) TimeUnit.MINUTES.toSeconds(REMINDER_INTERVAL_MINUTES);
     private static final int SYNC_TIME_SECONDS = REMINDER_INTERVAL_SECONDS;
 
@@ -55,8 +52,8 @@ public class ReminderUtils {
                 .setRecurring(true)
                 //automatically trigger our job run at 15 mins interval
                 .setTrigger(Trigger.executionWindow(
-                               30,
-                                30 + 30))
+                               REMINDER_INTERVAL_SECONDS,
+                        REMINDER_INTERVAL_SECONDS + SYNC_TIME_SECONDS))
                 //replace old job with new one
                 .setReplaceCurrent(true)
                 .build();
