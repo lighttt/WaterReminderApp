@@ -6,9 +6,9 @@ You can customize the time interval in which water has to be consumed.
 
 Our body needs water in ample amount on a daily basis
 
-This App Uses Advanced Android Concepts
-- Android Background Service
-- Firebase Job Dispatcher
-- Shared Preferences
-- Android Preference Settings
-- Android Fragments
+    This App Uses Advanced Android Concepts
+    - Android Background Service
+    - Firebase Job Dispatcher
+    - Shared Preferences
+    - Android Preference Settings
+    - Android Fragments
